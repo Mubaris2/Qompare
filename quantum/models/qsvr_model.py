@@ -40,6 +40,9 @@ class QuantumSVRAnomalyModel(StreamingModel):
         @qml.qnode(self.dev)
         def state_circuit(x):
             for _ in range(self.reps):
+                # Hadamard layer creates equal superposition so Z and ZZ phases encode nontrivial Hilbert space geometry
+                for i in range(self.n_qubits):
+                    qml.Hadamard(wires=i)
                 qml.AngleEmbedding(x, wires=range(self.n_qubits), rotation="Z")
                 for i in range(self.n_qubits - 1):
                     qml.CNOT(wires=[i, i + 1])
@@ -58,7 +61,7 @@ class QuantumSVRAnomalyModel(StreamingModel):
         self.meta = {
             "n_params": 0,
             "n_qubits": self.n_qubits,
-            "circuit_depth": self.reps * (1 + 3 * (self.n_qubits - 1)),
+            "circuit_depth": self.reps * (2 + 3 * (self.n_qubits - 1)),
             "n_circuit_evals": 0,
         }
 
@@ -77,7 +80,6 @@ class QuantumSVRAnomalyModel(StreamingModel):
         K = np.clip(np.abs(overlaps) ** 2, 0.0, 1.0)
         if self.shots is not None:
             if symmetric:
-                # Sample upper triangle with binomial shot noise and mirror
                 upper_idx = np.triu_indices_from(K, k=1)
                 sampled = self._rng.binomial(self.shots, K[upper_idx]) / float(self.shots)
                 K_noisy = np.eye(len(K), dtype=float)
@@ -90,7 +92,6 @@ class QuantumSVRAnomalyModel(StreamingModel):
 
     @staticmethod
     def _find_overlap_count(prev_X: np.ndarray, curr_X: np.ndarray) -> int:
-        """Finds k such that the last k rows of prev_X equal the first k rows of curr_X."""
         max_k = min(len(prev_X), len(curr_X))
         for k in range(max_k, 0, -1):
             if np.allclose(prev_X[-k:], curr_X[:k], atol=1e-12):
@@ -98,7 +99,6 @@ class QuantumSVRAnomalyModel(StreamingModel):
         return 0
 
     def fit(self, X: np.ndarray, y: np.ndarray = None):
-        # Semi-supervised AD: train only on normal samples (y == 0)
         if y is not None:
             X_norm = X[y == 0]
             if len(X_norm) < 5:
@@ -115,7 +115,6 @@ class QuantumSVRAnomalyModel(StreamingModel):
             k_keep = 0
 
         if k_keep > 0:
-            # E1 Incremental Kernel Cache Update: reuse (k_keep x k_keep) submatrix
             n_new = n - k_keep
             X_new = X_norm[k_keep:]
             kept_states = self._cached_states[-k_keep:]
@@ -132,11 +131,8 @@ class QuantumSVRAnomalyModel(StreamingModel):
                 K_train[k_keep:, :k_keep] = K_cross.T
                 K_train[k_keep:, k_keep:] = K_new_diag
 
-            # Hardware circuit evaluations required for only the new entries:
-            # k_keep * n_new cross pairs + n_new * (n_new - 1) // 2 new self pairs
             hw_evals = (k_keep * n_new) + (n_new * (n_new - 1)) // 2
         else:
-            # Full kernel computation from scratch
             all_states = self._encode_states(X_norm)
             K_train = self._fidelity_kernel(all_states, all_states, symmetric=True)
             hw_evals = (n * (n - 1)) // 2
@@ -169,7 +165,6 @@ class QuantumSVRAnomalyModel(StreamingModel):
         scores = np.mean((X - X_reconstructed) ** 2, axis=1)
         t_pred = time.perf_counter() - t1
 
-        # E3: Keep fit encoding separate and track inference encoding + prediction
         self.timings["t_predict"] = t_enc_test + t_pred
         self.meta["n_circuit_evals"] += len(X) * len(self._train_states)
         return scores

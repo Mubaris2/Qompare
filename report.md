@@ -115,3 +115,58 @@ Sliding-window evaluation on the T1 Seoul Bike stream ($W = 200, H = 20$, 15 sli
 1. **Equal Iteration Budget (`15` iterations):** Warm-starting from the prior window's variational weights lowers streaming MSE from **`0.0967` to `0.0928`** with zero additional quantum circuit evaluations.
 2. **Target Accuracy Regime:** Warm-starting with target stopping achieves the lowest overall streaming error (**`0.0886` Mean MSE**), beating the 35-iteration cold-start baseline (`0.0905` MSE) while reducing circuit evaluations by **62.0%** (`1,071` vs `2,820`) and per-window training latency by **2.66x** (`0.722s` vs `1.924s`).
 3. **E3 Overhead Decomposition:** In variational streaming (`VQR`), feature map encoding accounts for **~19.7%** of total per-step runtime while variational ansatz evaluation + optimizer updates account for **~79.0%**, whereas in kernel streaming (`QSVR`), state encoding + kernel evaluation dominates **>93%** of training time prior to E1 caching.
+
+---
+
+## 7. Week 4 Full Grid Evaluation, Drift Behavior & Quantum Diagnostics (Checkpoint 2)
+
+### 7.1 Updated Paper 3 & Week 3 Streaming Metrics with True Hadamard-ZZ Superposition
+Following the inclusion of the Hadamard superposition layer $H^{\otimes n}$ prior to each $R_Z$ and $ZZ$ entangling block in `QuantumSVRAnomalyModel`:
+- **Static P3 Reproduction (`results/quantum/T2_QSVR.csv`):** `QSVR (ZZ_reps2_C1.0)` achieves **`ROC-AUC = 0.9522` (`AP = 0.9594`)**, matching the tuned classical `SVR-RBF` baseline (**`ROC-AUC = 0.9539`**) within `0.0017` AUC (**Hypothesis H1 Confirmed**: quantum kernel SVR is highly competitive with RBF SVR on small tabular anomaly detection data, but does not decisively beat a fairly tuned classical RBF kernel).
+- **Streaming E1 Cache & Shot-Noise Ablation (`results/quantum/T2_QSVR_streaming_week3.csv`):**
+  - `ZZ_r1_full_exact` vs. `ZZ_r1_cached_exact`: Identical **`0.9556` Final Pooled ROC-AUC**, while mean encoding time drops from **`0.3034s` to `0.0936s` (3.24x speedup)** and circuit evaluations drop from **`6,895` to `4,518`** per step.
+  - `ZZ_r1_cached_shots1024`: Achieves **`0.9557` Final Pooled ROC-AUC**, confirming resilience at $n=5$ qubits under 1,024 measurement shots.
+
+---
+
+### 7.2 Qubits vs. Accuracy & Exponential Kernel Concentration (`results/quantum/diagnostics_qubits_concentration.csv` & `figures/fig1_kernel_concentration_qubits.png`)
+
+To test **Thanasilp et al. (2022)** (*Exponential concentration in quantum kernel methods*), we swept qubit count $n \in \{2, 3, 4, 5, 6, 7, 8\}$ (Hilbert space dimension $2^n \in [4, 256]$) with `reps=2` and recorded the off-diagonal fidelity kernel mean $\mathbb{E}_{i \neq j}[K(x_i, x_j)]$, variance $\text{Var}_{i \neq j}[K(x_i, x_j)]$, and test ROC-AUC (exact statevector vs. 1,024 shots):
+
+| Qubits ($n$) | Hilbert Dim ($2^n$) | Off-Diagonal Mean $\mathbb{E}[K_{ij}]$ | Off-Diagonal Variance $\text{Var}[K_{ij}]$ | ROC-AUC (Exact) | ROC-AUC (1024 Shots) | Encode Time (s) |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **2** | 4 | 0.5316 | **0.06907** | **0.9706** | 0.9649 | 0.19s |
+| **3** | 8 | 0.2200 | **0.04552** | 0.9597 | 0.9599 | 0.30s |
+| **4** | 16 | 0.1410 | **0.02637** | 0.9473 | 0.9491 | 0.42s |
+| **5** | 32 | 0.0623 | **0.00866** | 0.9614 | 0.9616 | 0.56s |
+| **6** | 64 | 0.0338 | **0.00312** | 0.9665 | 0.9658 | 0.72s |
+| **7** | 128 | 0.0200 | **0.00142** | 0.9646 | 0.9642 | 0.95s |
+| **8** | 256 | 0.0100 | **0.00049** | 0.9674 | 0.9668 | 1.38s |
+
+**Quantum Interpretation:**
+1. **141x Exponential Decay in Kernel Variance:** Between $n=2$ and $n=8$ qubits, $\text{Var}_{i \neq j}[K(x_i, x_j)]$ collapses by **two orders of magnitude (`0.06907` $\to$ `0.00049`)** while mean overlap approaches zero (`0.5316` $\to$ `0.0100`).
+2. **NISQ Shot-Budget Implication:** At $n=8$, the standard deviation of off-diagonal kernel entries is $\sqrt{0.00049} \approx 0.022$, which is already comparable to the binomial shot-noise standard error $1/\sqrt{1024} \approx 0.031$. Extrapolating this decay rate ($\text{Var}[K] \propto 2.27^{-n}$), beyond $n \ge 12$ qubits, 1,024-shot kernel estimation will be swamped by statistical shot noise, causing the kernel matrix to degenerate toward $K \approx I$. This justifies our design choice of capping quantum kernel dimensionality at $n \in [4, 7]$ via PCA.
+
+---
+
+### 7.3 Full-Grid Window Scaling ($W \in \{100, 200, 400\}$) & Drift Robustness (`results/quantum/T1_VQR_full_grid.csv`, `results/quantum/T2_QSVR_full_grid.csv`)
+
+1. **Cost Scaling with Window Size $W$ (`figures/fig2_e1_cache_scaling_vs_W.png` — Hypothesis H2 & H3 Confirmed):**
+   - Without caching (`ZZ_r1_full_exact`), hardware circuit evaluations grow quadratically with $W$: from **~3,900 evals/step at $W=100$** to **~14,500 evals/step at $W=200$** and **~55,000 evals/step at $W=400$**.
+   - With **E1 Incremental Kernel Cache (`ZZ_r1_cached_exact`)**, steady-state evaluations grow only linearly ($\propto W \cdot H$), reducing total job runtime at $W=400$ from **`2.30s` to `1.23s` (-46.5%)** while producing **100% identical AUC/AP trajectories** across all three drift regimes (`none`, `abrupt`, `gradual`).
+2. **Variational Warm-Start Scaling (`T1_VQR_full_grid.csv` & `figures/fig3_drift_response_vqr.png`):**
+   - Across 72 full-grid jobs logged in `results/quantum/run_log.csv`, **E2 Warm-Started VQR (`Z_RealAmplitudes_r1_COBYLA_warm`)** reduced 10-step stream execution time from **`5.22s–5.29s` (Cold)** down to **`1.56s–2.41s` at $W=100$ (2.4x faster)** and **`2.45s–4.01s` at $W=200$ (1.5x faster)**.
+   - Under `abrupt` and `gradual` concept drift, sliding-window retraining adapts within $W/H$ steps as pre-drift samples exit the window, and warm-starting does not trap the variational circuit in stale minima on the 1D `RealAmplitudes` landscape.
+
+---
+
+### 7.4 Checkpoint 2 Claim-to-Artifact Traceability Matrix
+
+| Report Claim / Research Question | Primary CSV Source | Figure / Appendix Reference |
+| :--- | :--- | :--- |
+| **P2 Reproduction (RQ1):** `ZFeatureMap` beats `ZZFeatureMap`; `SPSA` best MSE (`0.0693`), `COBYLA` 3x faster | `results/quantum/T1_VQR.csv` | Section 3.2 Table |
+| **P3 Reproduction (RQ1 / H1):** `QSVR` (`0.9522` AUC) matches tuned `SVR-RBF` (`0.9539` AUC) | `results/quantum/T2_QSVR.csv` | Section 4.1 & 7.1 |
+| **Enhancement E1 (RQ2 / RQ5 / H3):** Cached kernel equals full recompute (`atol=1e-10`) & cuts cost by $W/H$ | `results/quantum/T2_QSVR_streaming_week3.csv`, `T2_QSVR_full_grid.csv` | `figures/fig2_e1_cache_scaling_vs_W.png`, `tests/test_member_b.py` |
+| **Enhancement E2 (RQ5):** Warm-start VQR reduces MSE (`0.0886` vs `0.0905`) & cuts evals by 62% | `results/quantum/T1_VQR_streaming_week3.csv`, `T1_VQR_full_grid.csv` | `figures/fig3_drift_response_vqr.png` |
+| **Enhancement E3 (RQ2):** Encoding share is ~19.7% in VQR vs >90% in uncached QSVR | `results/quantum/T1_VQR_full_grid.csv`, `T2_QSVR_full_grid.csv` | `figures/fig4_e3_time_decomposition.png` |
+| **Kernel Concentration & Shot Noise (Thanasilp et al.):** 141x variance decay from $n=2$ to $n=8$ qubits | `results/quantum/diagnostics_qubits_concentration.csv` | `figures/fig1_kernel_concentration_qubits.png`, `report/appendix_simulability.md` |
