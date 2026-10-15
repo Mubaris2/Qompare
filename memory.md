@@ -51,3 +51,16 @@
 - [ ] **E1 Incremental Kernel Cache (`quantum/models/qsvr_streaming.py`)**: Cache the $(W-H) \times (W-H)$ submatrix when sliding by $H$, computing only $W \times H$ new kernel entries. Write unit test verifying `np.allclose(K_cached, K_full, atol=1e-10)`.
 - [ ] **E2 Warm-Started VQR (`quantum/models/vqr_streaming.py`)**: Pass trained ansatz weights from window $t-1$ as `initial_point` to window $t$ with reduced optimizer iterations (`maxiter=15` vs cold-start `maxiter=40`).
 - [ ] **E3 Encoding Overhead Decomposition**: Log exact state-preparation vs optimizer/SVR solve time across $W \in \{100, 200, 400\}$.
+
+---
+
+## 5. Week 3 Completed Deliverables (Streaming Enhancements E1, E2, E3 & Shot-Noise Ablation)
+- **Active Branch:** `Sumit-Quantum`
+- **Unit Tests (`tests/test_member_b.py`):** 4/4 passed in 2.55s (`test_vqr_interface_on_mock`, `test_qsvr_interface_on_mock`, `test_e1_incremental_kernel_cache_exact_equality`, `test_e2_vqr_warm_start_preserves_weights`).
+- **Validated Result Files:**
+  - `results/quantum/T2_QSVR_streaming_week3.csv` (`[PASS]`, 78 rows)
+  - `results/quantum/T1_VQR_streaming_week3.csv` (`[PASS]`, 120 rows)
+- **Empirical Highlights:**
+  - **E1 (QSVR Kernel Cache):** Identical Final Pooled ROC-AUC (`0.9626`), **3.52x speedup** in `t_encode` (`0.1958s` -> `0.0557s`), and **34.5% reduction** in total circuit evaluations per step (`6,895` -> `4,518`).
+  - **Shot-Noise Ablation (`shots=1024`):** Preserved `0.9626` Final Pooled ROC-AUC under 1024-shot binomial sampling noise.
+  - **E2 (VQR Warm Start):** Under equal budget (`maxiter=15`), reduced Mean MSE from `0.0967` to `0.0928`. Under accuracy target (`target_mse=0.068`), achieved `0.0886` Mean MSE vs `0.0905` (`cold_iter35`) while cutting circuit evaluations by **62.0%** (`1,071` vs `2,820`) and step runtime by **2.66x**.
