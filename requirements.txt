@@ -14,3 +14,4 @@ pyyaml==6.0.2
 pytest==8.3.2
 ucimlrepo==0.0.7
 autoray==0.6.12
+matplotlib==3.11.2

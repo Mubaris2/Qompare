@@ -64,3 +64,23 @@
   - **E1 (QSVR Kernel Cache):** Identical Final Pooled ROC-AUC (`0.9626`), **3.52x speedup** in `t_encode` (`0.1958s` -> `0.0557s`), and **34.5% reduction** in total circuit evaluations per step (`6,895` -> `4,518`).
   - **Shot-Noise Ablation (`shots=1024`):** Preserved `0.9626` Final Pooled ROC-AUC under 1024-shot binomial sampling noise.
   - **E2 (VQR Warm Start):** Under equal budget (`maxiter=15`), reduced Mean MSE from `0.0967` to `0.0928`. Under accuracy target (`target_mse=0.068`), achieved `0.0886` Mean MSE vs `0.0905` (`cold_iter35`) while cutting circuit evaluations by **62.0%** (`1,071` vs `2,820`) and step runtime by **2.66x**.
+
+---
+
+## 6. Week 4 Completed Deliverables (Full Grid, Drift, Diagnostics & Checkpoint 2 Freeze)
+- **Critical Physics Fix Applied:** Added the initial Hadamard superposition layer (`qml.Hadamard` on all wires prior to each `AngleEmbedding(rotation="Z")` and `ZZ` entangling layer) in `QuantumSVRAnomalyModel`. Without Hadamard gates, diagonal $Z/ZZ$ rotations on $\vert{}0\rangle^{\otimes n}$ only accumulated global phase. With Hadamard layers, the quantum kernel exhibits true Hilbert-space geometry and reproduces the exact exponential concentration decay predicted by Thanasilp et al. (2022).
+- **Validated Full-Grid & Diagnostic CSVs (All Passing `common/validate_results.py`):**
+  - `results/quantum/T1_VQR.csv` (48 rows — 24-config Paper 2 sweep)
+  - `results/quantum/T2_QSVR.csv` (8 rows — Paper 3 static reproduction; `ZZ_reps2_C1.0` achieves `AUC = 0.9522`, `AP = 0.9594` vs Classical SVR-RBF `AUC = 0.9539`)
+  - `results/quantum/T1_VQR_streaming_week3.csv` (120 rows — E2/E3 streaming ablations)
+  - `results/quantum/T2_QSVR_streaming_week3.csv` (78 rows — E1/shot-noise streaming ablations; `AUC = 0.9556` exact vs `0.9557` at 1024 shots; **3.24x** encoding speedup `0.3034s` -> `0.0936s`)
+  - `results/quantum/T1_VQR_full_grid.csv` (720 rows — $W \in \{100, 200, 400\} \times \text{drift} \in \{\text{none}, \text{abrupt}, \text{gradual}\} \times \{\text{warm}, \text{cold}\} \times \text{seeds}$)
+  - `results/quantum/T2_QSVR_full_grid.csv` (456 rows — $W \in \{100, 200, 400\} \times \text{drift} \in \{\text{none}, \text{abrupt}, \text{gradual}\} \times \{\text{cached}, \text{full}\} \times \text{seeds}$)
+  - `results/quantum/run_log.csv` (72 completed full-grid jobs with runtime and Git commit hash `1ce638d`)
+  - `results/quantum/diagnostics_qubits_concentration.csv` (Qubit sweep $n \in \{2..8\}$ proving 141x kernel variance decay from `0.06907` to `0.00049`)
+- **Generated Figures (`figures/`):**
+  - `figures/fig1_kernel_concentration_qubits.png`
+  - `figures/fig2_e1_cache_scaling_vs_W.png`
+  - `figures/fig3_drift_response_vqr.png`
+  - `figures/fig4_e3_time_decomposition.png`
+- **Theoretical Appendix:** `report/appendix_simulability.md`
