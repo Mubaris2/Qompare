@@ -82,3 +82,36 @@ Based on measured runtimes and schema validation (`[PASS]` on both `T1_VQR.csv` 
 1. **Selected VQR Streaming Variant:** `Z_RealAmplitudes_r1_COBYLA` and `Z_EfficientSU2_r2_COBYLA` for cold vs. warm-start (**E2**) streaming comparisons, plus `Z_RealAmplitudes_r2_SPSA` as the accuracy reference.
 2. **Selected QSVR Streaming Variant:** `ZZ_reps1_C1.0` with **E1 Incremental Kernel Cache**.
 3. **Window Grid & Seeds:** $W \in \{100, 200, 400\}$, step $H = 20$ (T1) and $H = 50$ (T2), 3 seeds (`42, 100, 2024`) for VQR and 5 seeds (`42, 100, 2024, 7, 99`) for QSVR.
+
+---
+
+## 6. Week 3 Streaming Enhancements (E1, E2, E3 & Shot-Noise Ablation)
+
+### 6.1 Enhancement E1 & Shot-Noise Ablation on Task T2 (`results/quantum/T2_QSVR_streaming_week3.csv`)
+Sliding-window evaluation on the T2 Anomaly Detection stream ($W = 150, H = 30$, 13 sliding windows):
+
+| Variant | Kernel Mode | Shots | Final Pooled ROC-AUC | Mean `t_encode` (s) | Mean `t_fit` (s) | Mean `t_predict` (s) | Mean Circuit Evals / Step |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| `ZZ_r1_full_exact` | Full Recompute | Exact ($\infty$) | **0.9626** | 0.1958 | 0.0041 | 0.0412 | 6,895 |
+| **`ZZ_r1_cached_exact` (E1)** | **Incremental Cache** | Exact ($\infty$) | **0.9626** | **0.0557** | 0.0040 | 0.0408 | **4,518** |
+| **`ZZ_r1_cached_shots1024`** | **Incremental Cache** | **1024 Shots** | **0.9626** | **0.0550** | 0.0041 | 0.0410 | **4,518** |
+
+**Key Findings (Hypothesis H3 Confirmed):**
+1. **Zero Accuracy Loss:** Unit testing (`test_e1_incremental_kernel_cache_exact_equality`) and full-stream evaluation confirm that E1 incremental kernel caching produces kernel matrices and anomaly scores identical to full recomputation (`atol = 1e-10`), achieving the exact same **`0.9626` ROC-AUC**.
+2. **3.52x Encoding Speedup:** Reusing the overlapping $(W-H) \times (W-H)$ normal submatrix cuts mean state-encoding and kernel construction time from **`0.1958s` to `0.0557s` per step**.
+3. **Shot-Noise Robustness:** At `1024` shots per kernel entry, pooled ROC-AUC remains stable at **`0.9626`**.
+
+### 6.2 Enhancements E2 (Warm-Start VQR) & E3 (Encoding Overhead Decomposition) on Task T1 (`results/quantum/T1_VQR_streaming_week3.csv`)
+Sliding-window evaluation on the T1 Seoul Bike stream ($W = 200, H = 20$, 15 sliding windows, `ZFeatureMap` + `RealAmplitudes(reps=1)` + `COBYLA`):
+
+| Variant | Training Regime | Mean MSE | Mean `t_encode` (s) | Mean `t_fit` (s) | Mean `t_predict` (s) | Encode Share of Total Time | Mean Circuit Evals / Step |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| `Z_RealAmplitudes_r1_COBYLA_cold_iter15` | Cold Start (15 iter) | 0.0967 | 0.164 | 0.656 | 0.011 | 19.7% | 1,220 |
+| **`Z_RealAmplitudes_r1_COBYLA_warm_iter15` (E2)** | **Warm Start (Equal Budget: 15 iter)** | **0.0928** | 0.165 | 0.664 | 0.011 | 19.6% | 1,220 |
+| `Z_RealAmplitudes_r1_COBYLA_cold_iter35` | Cold Start (35 iter) | 0.0905 | 0.384 | 1.540 | 0.011 | 19.8% | 2,820 |
+| **`Z_RealAmplitudes_r1_COBYLA_warm_target` (E2)** | **Warm Start (Target MSE $\le 0.068$)** | **0.0886** | **0.144** | **0.578** | 0.011 | 19.6% | **1,071** |
+
+**Key Findings (RQ5 Confirmed):**
+1. **Equal Iteration Budget (`15` iterations):** Warm-starting from the prior window's variational weights lowers streaming MSE from **`0.0967` to `0.0928`** with zero additional quantum circuit evaluations.
+2. **Target Accuracy Regime:** Warm-starting with target stopping achieves the lowest overall streaming error (**`0.0886` Mean MSE**), beating the 35-iteration cold-start baseline (`0.0905` MSE) while reducing circuit evaluations by **62.0%** (`1,071` vs `2,820`) and per-window training latency by **2.66x** (`0.722s` vs `1.924s`).
+3. **E3 Overhead Decomposition:** In variational streaming (`VQR`), feature map encoding accounts for **~19.7%** of total per-step runtime while variational ansatz evaluation + optimizer updates account for **~79.0%**, whereas in kernel streaming (`QSVR`), state encoding + kernel evaluation dominates **>93%** of training time prior to E1 caching.
