@@ -1,0 +1,5 @@
+# Member B only. Pin versions yourself (APIs change between releases).
+qiskit
+qiskit-aer
+qiskit-machine-learning
+pennylane

@@ -1,0 +1,18 @@
+{
+  "task": "anomaly",
+  "label": "1=anomaly",
+  "source": "32_shuttle.npz",
+  "anomaly_rate": 0.0669,
+  "order_seed": 0,
+  "fit_rows": 400,
+  "pca_explained_variance_ratio": [
+    0.4097,
+    0.1917,
+    0.1205,
+    0.1093,
+    0.1018
+  ],
+  "frac_outside_range_after_first_window": 0.06541666666666666,
+  "n_rows": 10000,
+  "n_features": 5
+}

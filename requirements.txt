@@ -1,0 +1,12 @@
+# Member A (classical). Pin exact versions after first successful run: pip freeze > requirements.lock
+river>=0.22
+scikit-learn>=1.4
+pandas>=2.0
+pyarrow>=14
+scipy>=1.11
+numpy>=1.26
+pyyaml
+pytest
+matplotlib
+seaborn
+statsmodels

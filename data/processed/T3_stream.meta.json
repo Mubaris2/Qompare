@@ -1,0 +1,15 @@
+{
+  "task": "classification",
+  "source": "csv",
+  "natural_drift": true,
+  "fit_rows": 7500,
+  "pca_explained_variance_ratio": [
+    0.3565,
+    0.2145,
+    0.201,
+    0.1433
+  ],
+  "frac_outside_range_after_first_window": 0.1036,
+  "n_rows": 10000,
+  "n_features": 4
+}
