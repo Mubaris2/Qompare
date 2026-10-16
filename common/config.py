@@ -11,4 +11,4 @@ DRIFTS = ["none", "abrupt", "gradual"]
 DRIFT_START_FRAC = 0.5
 DRIFT_WIDTH_FRAC = 0.2     # gradual ramp length
 DRIFT_MAGNITUDE = 1.0      # in feature std units
-STREAM_FIT_ROWS = 400      # scaler/PCA fit rows (data/prep.py)
+STREAM_FIT_ROWS = 800      # scaler/PCA fit rows (data/prep.py). Must be <= TUNE_ROWS: never fit on test rows

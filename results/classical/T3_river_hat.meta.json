@@ -2,8 +2,8 @@
   "task": "T3",
   "model": "river_hat",
   "params": {
-    "grace_period": 54,
-    "delta": 1.6872513156089955e-07,
+    "grace_period": 61,
+    "delta": 1.1533211466105446e-07,
     "split_criterion": "hellinger",
     "leaf_prediction": "nba"
   },
@@ -29,5 +29,5 @@
   ],
   "start": 800,
   "max_steps": null,
-  "finished": "2026-10-15T19:21:45+00:00"
+  "finished": "2026-10-16T09:44:03+00:00"
 }

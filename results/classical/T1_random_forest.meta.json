@@ -2,8 +2,8 @@
   "task": "T1",
   "model": "random_forest",
   "params": {
-    "n_estimators": 100,
-    "max_depth": null,
+    "n_estimators": 50,
+    "max_depth": 12,
     "min_samples_leaf": 5
   },
   "tuned": true,
@@ -28,5 +28,5 @@
   ],
   "start": 800,
   "max_steps": null,
-  "finished": "2026-10-15T19:15:54+00:00"
+  "finished": "2026-10-16T09:41:18+00:00"
 }

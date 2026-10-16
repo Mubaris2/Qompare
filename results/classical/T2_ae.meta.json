@@ -2,12 +2,14 @@
   "task": "T2",
   "model": "ae",
   "params": {
-    "alpha": 0.0009889688546247581,
-    "learning_rate_init": 0.016753101244182673,
+    "alpha": 0.00011202978422012269,
+    "learning_rate_init": 0.001684592825106602,
     "max_iter": 500
   },
   "tuned": true,
   "commit": "dc83ab5",
+  "data_fingerprint": "cc26f4bb9d3a",
+  "tuned_on_fingerprint": "cc26f4bb9d3a",
   "n_jobs": 45,
   "Ws": [
     100,
@@ -28,5 +30,5 @@
   ],
   "start": 800,
   "max_steps": null,
-  "finished": "2026-10-15T19:19:51+00:00"
+  "finished": "2026-10-16T10:36:49+00:00"
 }

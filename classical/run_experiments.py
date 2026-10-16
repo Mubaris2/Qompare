@@ -13,7 +13,7 @@ from common import config as C
 from common.drift import inject_drift
 from common.harness import run_stream
 from . import registry as R
-from .data_io import load_task, ROOT, PROC
+from .data_io import load_task, fingerprint, ROOT, PROC
 
 
 def _commit():
@@ -50,6 +50,10 @@ def run(tasks, models=None, Ws=C.W_GRID, seeds=C.SEEDS, drifts=C.DRIFTS, max_ste
             if resume and f.exists():
                 print(f"[skip] {f.name}"); continue
             params = best.get(task, {}).get(name, {}).get("params", {})
+            _X, _y, _ = load_task(task, data_dir); fp = fingerprint(_X, _y)
+            tuned_on = best.get(task, {}).get(name, {}).get("data_fingerprint")
+            if tuned_on and tuned_on != fp:
+                print(f"WARNING: {task}/{name} params were tuned on data {tuned_on}, current data is {fp}. Re-run classical.tune.")
             jobs = [(task, name, params, W, d, s, max_steps, str(data_dir)) for W in Ws for d in drifts for s in seeds]
             t0 = time.perf_counter()
             if workers > 1:
@@ -60,7 +64,7 @@ def run(tasks, models=None, Ws=C.W_GRID, seeds=C.SEEDS, drifts=C.DRIFTS, max_ste
             df = pd.concat(dfs, ignore_index=True)
             df.to_csv(f, index=False)
             f.with_suffix(".meta.json").write_text(json.dumps(dict(
-                task=task, model=name, params=params, tuned=bool(params), commit=_commit(), n_jobs=len(jobs), Ws=list(Ws),
+                task=task, model=name, params=params, tuned=bool(params), commit=_commit(), data_fingerprint=fp, tuned_on_fingerprint=tuned_on, n_jobs=len(jobs), Ws=list(Ws),
                 seeds=list(seeds), drifts=list(drifts), start=C.STREAM_START, max_steps=max_steps,
                 finished=datetime.now(timezone.utc).isoformat(timespec="seconds")), indent=2))
             print(f"[done] {f.name}: {len(df)} rows, {len(jobs)} runs, {time.perf_counter() - t0:.0f}s")

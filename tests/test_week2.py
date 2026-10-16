@@ -75,6 +75,7 @@ def test_run_experiments_smoke_and_validate(mock_dir, tmp_path):
         assert validate(f) == []
     d = pd.read_csv(tmp_path / "res" / "T3_river_ht.csv")
     assert set(d.drift) == {"natural", "abrupt"} and d.n_seen.min() >= C.STREAM_START
+    assert len(json.loads((tmp_path / "res" / "T3_river_ht.meta.json").read_text())["data_fingerprint"]) == 12
 
 
 def test_p3_protocol_deterministic_disjoint():

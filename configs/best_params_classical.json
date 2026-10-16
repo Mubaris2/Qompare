@@ -2,12 +2,12 @@
   "T1": {
     "svr_rbf": {
       "params": {
-        "C": 0.15928233280153958,
-        "epsilon": 0.03721927621623354,
-        "gamma": 0.01831143732853741
+        "C": 1.8710373896211634,
+        "epsilon": 0.03269457920161319,
+        "gamma": 0.08463989491351293
       },
-      "objective": 0.0012145258872953736,
-      "default_objective": 0.0016612295828908946,
+      "objective": 0.0011719913720738384,
+      "default_objective": 0.0019124300770701403,
       "direction": "min",
       "n_trials": 20,
       "tune_rows": 800,
@@ -16,12 +16,12 @@
     },
     "random_forest": {
       "params": {
-        "n_estimators": 100,
-        "max_depth": null,
+        "n_estimators": 50,
+        "max_depth": 12,
         "min_samples_leaf": 5
       },
-      "objective": 0.0012448067098891214,
-      "default_objective": 0.001344914219111601,
+      "objective": 0.0012276788932645817,
+      "default_objective": 0.0013100011561230605,
       "direction": "min",
       "n_trials": 20,
       "tune_rows": 800,
@@ -30,56 +30,13 @@
     },
     "river_ht_reg": {
       "params": {
-        "grace_period": 73,
-        "delta": 1.0412942222253534e-06,
+        "grace_period": 132,
+        "delta": 0.0015055780010730245,
         "leaf_prediction": "mean"
       },
-      "objective": 0.0013031554672627921,
-      "default_objective": 0.001440461222315374,
+      "objective": 0.0012771406504786585,
+      "default_objective": 0.001454948366228722,
       "direction": "min",
-      "n_trials": 20,
-      "tune_rows": 800,
-      "tune_W": 200,
-      "seed": 0
-    }
-  },
-  "T2": {
-    "svr_recon_rbf": {
-      "params": {
-        "C": 13.169840087662216,
-        "epsilon": 0.005262524520578738,
-        "gamma": 3.642531788206868
-      },
-      "objective": 0.8898758561643835,
-      "default_objective": 0.7498929794520548,
-      "direction": "max",
-      "n_trials": 20,
-      "tune_rows": 800,
-      "tune_W": 200,
-      "seed": 0
-    },
-    "ae": {
-      "params": {
-        "alpha": 0.0009889688546247581,
-        "learning_rate_init": 0.016753101244182673,
-        "max_iter": 500
-      },
-      "objective": 0.9106378424657534,
-      "default_objective": 0.9106378424657534,
-      "direction": "max",
-      "n_trials": 20,
-      "tune_rows": 800,
-      "tune_W": 200,
-      "seed": 0
-    },
-    "ocsvm_rbf": {
-      "params": {
-        "nu": 0.08910177747372855,
-        "gamma": 3.3047486443043814
-      },
-      "objective": 0.8602311643835617,
-      "default_objective": 0.738013698630137,
-      "direction": "max",
       "n_trials": 20,
       "tune_rows": 800,
       "tune_W": 200,
@@ -89,13 +46,13 @@
   "T3": {
     "river_ht": {
       "params": {
-        "grace_period": 169,
-        "delta": 0.0010282453335898507,
-        "split_criterion": "info_gain",
-        "leaf_prediction": "nb"
+        "grace_period": 88,
+        "delta": 6.0767636683586786e-06,
+        "split_criterion": "hellinger",
+        "leaf_prediction": "nba"
       },
-      "objective": 0.7666666666666665,
-      "default_objective": 0.7316666666666666,
+      "objective": 0.7699999999999999,
+      "default_objective": 0.73,
       "direction": "max",
       "n_trials": 20,
       "tune_rows": 800,
@@ -104,13 +61,13 @@
     },
     "river_hat": {
       "params": {
-        "grace_period": 54,
-        "delta": 1.6872513156089955e-07,
+        "grace_period": 61,
+        "delta": 1.1533211466105446e-07,
         "split_criterion": "hellinger",
         "leaf_prediction": "nba"
       },
-      "objective": 0.8249999999999998,
-      "default_objective": 0.7849999999999999,
+      "objective": 0.7633333333333332,
+      "default_objective": 0.7116666666666664,
       "direction": "max",
       "n_trials": 20,
       "tune_rows": 800,
@@ -119,16 +76,62 @@
     },
     "batch_tree": {
       "params": {
-        "max_depth": null,
-        "min_samples_leaf": 5
+        "max_depth": 5,
+        "min_samples_leaf": 1
       },
-      "objective": 0.7933333333333333,
-      "default_objective": 0.7916666666666666,
+      "objective": 0.7833333333333333,
+      "default_objective": 0.7816666666666666,
       "direction": "max",
       "n_trials": 20,
       "tune_rows": 800,
       "tune_W": 200,
       "seed": 0
+    }
+  },
+  "T2": {
+    "svr_recon_rbf": {
+      "params": {
+        "C": 0.8229214987866184,
+        "epsilon": 0.1930341675608402,
+        "gamma": 1.9766381184108746
+      },
+      "objective": 0.9929021752745187,
+      "default_objective": 0.9888104880798296,
+      "direction": "max",
+      "n_trials": 20,
+      "tune_rows": 800,
+      "tune_W": 200,
+      "seed": 0,
+      "data_fingerprint": "cc26f4bb9d3a"
+    },
+    "ae": {
+      "params": {
+        "alpha": 0.00011202978422012269,
+        "learning_rate_init": 0.001684592825106602,
+        "max_iter": 500
+      },
+      "objective": 0.9663062085090394,
+      "default_objective": 0.9463070435472423,
+      "direction": "max",
+      "n_trials": 20,
+      "tune_rows": 800,
+      "tune_W": 200,
+      "seed": 0,
+      "data_fingerprint": "cc26f4bb9d3a"
+    },
+    "ocsvm_rbf": {
+      "params": {
+        "nu": 0.13765521975838288,
+        "gamma": 9.318959508420908
+      },
+      "objective": 0.9920253851613712,
+      "default_objective": 0.9850110642561898,
+      "direction": "max",
+      "n_trials": 20,
+      "tune_rows": 800,
+      "tune_W": 200,
+      "seed": 0,
+      "data_fingerprint": "cc26f4bb9d3a"
     }
   }
 }

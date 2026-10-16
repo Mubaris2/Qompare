@@ -2,8 +2,8 @@
   "task": "T1",
   "model": "river_ht_reg",
   "params": {
-    "grace_period": 73,
-    "delta": 1.0412942222253534e-06,
+    "grace_period": 132,
+    "delta": 0.0015055780010730245,
     "leaf_prediction": "mean"
   },
   "tuned": true,
@@ -28,5 +28,5 @@
   ],
   "start": 800,
   "max_steps": null,
-  "finished": "2026-10-15T19:16:36+00:00"
+  "finished": "2026-10-16T09:41:54+00:00"
 }

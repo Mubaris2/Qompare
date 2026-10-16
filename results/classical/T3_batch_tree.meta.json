@@ -2,8 +2,8 @@
   "task": "T3",
   "model": "batch_tree",
   "params": {
-    "max_depth": null,
-    "min_samples_leaf": 5
+    "max_depth": 5,
+    "min_samples_leaf": 1
   },
   "tuned": true,
   "commit": "dc83ab5",
@@ -27,5 +27,5 @@
   ],
   "start": 800,
   "max_steps": null,
-  "finished": "2026-10-15T19:22:03+00:00"
+  "finished": "2026-10-16T09:44:21+00:00"
 }

@@ -2,10 +2,10 @@
   "task": "T3",
   "model": "river_ht",
   "params": {
-    "grace_period": 169,
-    "delta": 0.0010282453335898507,
-    "split_criterion": "info_gain",
-    "leaf_prediction": "nb"
+    "grace_period": 88,
+    "delta": 6.0767636683586786e-06,
+    "split_criterion": "hellinger",
+    "leaf_prediction": "nba"
   },
   "tuned": true,
   "commit": "dc83ab5",
@@ -29,5 +29,5 @@
   ],
   "start": 800,
   "max_steps": null,
-  "finished": "2026-10-15T19:20:26+00:00"
+  "finished": "2026-10-16T09:42:47+00:00"
 }

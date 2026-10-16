@@ -23,6 +23,17 @@ Commit `data/raw/MANIFEST.json`. Member B runs `python data/download.py --verify
 
 `prep.py` options: `python data/prep.py t2 --file data/raw/ad/6_cardio.npz --n-rows 10000 --n-components 5`.
 
+## Week 2 (classical baselines, Member A)
+```
+python -m classical.tune                      # 20-trial random search per tunable model, prefix rows only -> configs/best_params_classical.json
+python -m classical.batch_parity p2           # P2 parity split (T1 400 train / 250 test)
+python -m classical.batch_parity p3 --draws 50   # P3 protocol on ADBench mammography -> parity/classical_parity.csv + parity/p3_splits_*.npz
+python -m classical.run_experiments --workers 4  # full grid -> results/classical/*.csv  (add --resume to continue)
+python -m classical.run_experiments --models svr_rbf --W 200 --seeds 0 --drifts none --max-steps 20   # quick smoke
+make validate
+```
+Grid = task x model x W {100,200,400} x drift {none, abrupt, gradual} x seeds 0..4. Constants: `common/config.py`.
+
 ## Member B entry point
 Read `common/CONTRACT.md`. Use `data/processed/*` (mock now, real later). Subclass `common.base.Model`.
 Run with `common.harness.run_stream(model, X, y, task, W, H, seed)`. Save to `results/quantum/`.

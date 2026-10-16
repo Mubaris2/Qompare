@@ -2,12 +2,14 @@
   "task": "T2",
   "model": "svr_recon_rbf",
   "params": {
-    "C": 13.169840087662216,
-    "epsilon": 0.005262524520578738,
-    "gamma": 3.642531788206868
+    "C": 0.8229214987866184,
+    "epsilon": 0.1930341675608402,
+    "gamma": 1.9766381184108746
   },
   "tuned": true,
   "commit": "dc83ab5",
+  "data_fingerprint": "cc26f4bb9d3a",
+  "tuned_on_fingerprint": "cc26f4bb9d3a",
   "n_jobs": 45,
   "Ws": [
     100,
@@ -28,5 +30,5 @@
   ],
   "start": 800,
   "max_steps": null,
-  "finished": "2026-10-15T19:17:31+00:00"
+  "finished": "2026-10-16T10:31:40+00:00"
 }

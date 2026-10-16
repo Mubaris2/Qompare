@@ -13,7 +13,7 @@ import numpy as np, pandas as pd
 from common import config as C
 from common.harness import run_stream
 from . import registry as R
-from .data_io import load_task, ROOT, PROC
+from .data_io import load_task, fingerprint, ROOT, PROC
 
 DIRECTION = {"T1": "min", "T2": "max", "T3": "max"}
 
@@ -57,7 +57,7 @@ def tune(task, models=None, n_trials=C.N_TRIALS, seed=C.TUNE_SEED, data_dir=PROC
         if best is None:
             print(f"[{task}/{name}] no valid trial (all NaN). Check that the prefix contains anomalies / both classes."); continue
         best_all.setdefault(task, {})[name] = dict(params=best[1], objective=best[0], default_objective=d_obj, direction=DIRECTION[task],
-                                                  n_trials=n_trials, tune_rows=C.TUNE_ROWS, tune_W=C.TUNE_W, seed=seed)
+                                                  n_trials=n_trials, tune_rows=C.TUNE_ROWS, tune_W=C.TUNE_W, seed=seed, data_fingerprint=fingerprint(X, y))
         print(f"[{task}/{name}] best {best[0]:.4f} (default {d_obj:.4f})  {best[1]}")
     trials_csv.parent.mkdir(parents=True, exist_ok=True)
     pd.DataFrame(rows).to_csv(trials_csv, index=False)

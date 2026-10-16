@@ -13,3 +13,10 @@ def load_task(task, data_dir=PROC):
     X = df.filter(regex=r"^f\d+$").to_numpy(float); y = df["y"].to_numpy()
     mp = data_dir / f"{task}_stream.meta.json"
     return X, y, (json.loads(mp.read_text()) if mp.exists() else {})
+
+
+def fingerprint(X, y):
+    """12-hex fingerprint of the stream content (6-decimal rounding tolerates last-bit LAPACK differences across machines)."""
+    import hashlib, numpy as np
+    h = hashlib.sha256(np.ascontiguousarray(np.round(np.asarray(X, float), 6)).tobytes() + np.ascontiguousarray(np.asarray(y, float)).tobytes())
+    return h.hexdigest()[:12]

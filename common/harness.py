@@ -16,8 +16,9 @@ METRICS_BY_TASK = {"T1": ["mse", "mae"], "T2": ["auc_pooled", "ap_pooled"],
 
 
 def run_stream(model, X, y, task, W, H, seed=0, drift="none", drift_start=None,
-               pool=500, track_mem=False, max_steps=None):
-    """Return long-format DataFrame (one row per step x metric)."""
+               pool=500, track_mem=False, max_steps=None, start=None):
+    """Return long-format DataFrame (one row per step x metric).
+    start: index of the first test block (default W). Use config.STREAM_START so rows before it stay a tuning-only prefix."""
     assert task in TASKS, task
     X = np.asarray(X, dtype=float); y = np.asarray(y)
     N = len(X)
@@ -27,7 +28,8 @@ def run_stream(model, X, y, task, W, H, seed=0, drift="none", drift_start=None,
         model.set_seed(seed)
 
     rows, pool_lab, pool_sc = [], [], []
-    t, step = W, 0
+    t, step = (W if start is None else start), 0
+    assert t >= W, "start must be >= W (need a full training window)"
     while t + H <= N:
         if max_steps is not None and step >= max_steps:
             break
