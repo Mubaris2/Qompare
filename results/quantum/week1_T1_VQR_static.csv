@@ -1,0 +1,5 @@
+task,model,variant,seed,W,H,drift,step,n_seen,metric_name,metric_value,t_encode,t_fit,t_predict,n_params,n_qubits,n_circuit_evals,peak_mem_mb
+T1,VQR,Z_RealAmplitudes_r1_COBYLA,42,400,250,none,0,400,MSE,0.097992,0.6059,2.4297,0.1637,14,7,4250,2.825
+T1,VQR,Z_RealAmplitudes_r1_COBYLA,42,400,250,none,0,400,MAE,0.291571,0.6059,2.4297,0.1637,14,7,4250,2.825
+T1,VQR,Z_RealAmplitudes_r1_SPSA,42,400,250,none,0,400,MSE,0.102275,1.0712,4.295,0.1599,14,7,8250,2.326
+T1,VQR,Z_RealAmplitudes_r1_SPSA,42,400,250,none,0,400,MAE,0.296768,1.0712,4.295,0.1599,14,7,8250,2.326

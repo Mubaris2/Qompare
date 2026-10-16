@@ -1,0 +1,57 @@
+{
+  "ad_cardio": {
+    "files": {
+      "ad/6_cardio.npz": {
+        "bytes": 68471,
+        "sha256": "bc5009bde6930b4d298b594f31b34485a9a17210cff0e8fb00a8c3068b885a2d"
+      }
+    },
+    "recorded": "2026-10-16T05:38:00+00:00",
+    "url": "https://raw.githubusercontent.com/Minqi824/ADBench/main/adbench/datasets/Classical/6_cardio.npz",
+    "used_by": "T2 (1,831 x 21, 9.6% anomalies, small)"
+  },
+  "ad_mammography": {
+    "files": {
+      "ad/23_mammography.npz": {
+        "bytes": 166764,
+        "sha256": "a0308ac9712d78321073b1c2dc98dc37665c0f35c1cc33019416fe8f8d7de7ea"
+      }
+    },
+    "recorded": "2026-10-16T05:37:48+00:00",
+    "url": "https://raw.githubusercontent.com/Minqi824/ADBench/main/adbench/datasets/Classical/23_mammography.npz",
+    "used_by": "T2 (11,183 x 6, 2.3% anomalies)"
+  },
+  "ad_shuttle": {
+    "files": {
+      "ad/32_shuttle.npz": {
+        "bytes": 332929,
+        "sha256": "26900b0f6be45d9ddb7a402c9b2f956ceda42d23a8ca4cf4406b8bc1352823d1"
+      }
+    },
+    "recorded": "2026-10-16T05:37:47+00:00",
+    "url": "https://raw.githubusercontent.com/Minqi824/ADBench/main/adbench/datasets/Classical/32_shuttle.npz",
+    "used_by": "T2 (49,097 x 9, 7.2% anomalies)"
+  },
+  "elec2": {
+    "files": {
+      "elec2/electricity.csv": {
+        "bytes": 3091689,
+        "sha256": "c10a416790ef8ab96089e5adfd2febb7c9cec72bd80dfecb2342f2283b86b88a"
+      }
+    },
+    "recorded": "2026-10-16T05:37:42+00:00",
+    "url": "https://maxhalford.github.io/files/datasets/electricity.zip",
+    "used_by": "T3, P1 reproduction"
+  },
+  "seoul_bike": {
+    "files": {
+      "seoul_bike/SeoulBikeData.csv": {
+        "bytes": 604166,
+        "sha256": "373339b71a8935d69e9af0abf26a70744632119862eeb3919efb389a7b749c60"
+      }
+    },
+    "recorded": "2026-10-16T05:37:46+00:00",
+    "url": "https://archive.ics.uci.edu/static/public/560/seoul+bike+sharing+demand.zip",
+    "used_by": "T1"
+  }
+}
