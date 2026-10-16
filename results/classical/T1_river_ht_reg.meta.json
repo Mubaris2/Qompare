@@ -1,0 +1,32 @@
+{
+  "task": "T1",
+  "model": "river_ht_reg",
+  "params": {
+    "grace_period": 132,
+    "delta": 0.0015055780010730245,
+    "leaf_prediction": "mean"
+  },
+  "tuned": true,
+  "commit": "dc83ab5",
+  "n_jobs": 45,
+  "Ws": [
+    100,
+    200,
+    400
+  ],
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "drifts": [
+    "none",
+    "abrupt",
+    "gradual"
+  ],
+  "start": 800,
+  "max_steps": null,
+  "finished": "2026-10-16T09:41:54+00:00"
+}

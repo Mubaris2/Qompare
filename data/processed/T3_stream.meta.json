@@ -2,14 +2,29 @@
   "task": "classification",
   "source": "csv",
   "natural_drift": true,
-  "fit_rows": 7500,
-  "pca_explained_variance_ratio": [
-    0.3565,
-    0.2145,
-    0.201,
-    0.1433
+  "dropped_columns": [
+    "date"
   ],
-  "frac_outside_range_after_first_window": 0.1036,
+  "columns_used": [
+    "day",
+    "period",
+    "nswprice",
+    "nswdemand",
+    "vicprice",
+    "vicdemand",
+    "transfer"
+  ],
+  "fit_rows": 800,
+  "n_fit_samples": 800,
+  "margin": 0.0,
+  "pca_explained_variance_ratio": [
+    0.4948,
+    0.2529,
+    0.1681,
+    0.0842
+  ],
+  "frac_outside_range_after_first_window": 0.057608695652173914,
+  "fit_rows_exceed_tune_rows": false,
   "n_rows": 10000,
   "n_features": 4
 }
