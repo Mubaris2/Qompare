@@ -1,0 +1,28 @@
+{
+  "task": "T1",
+  "model": "naive_last",
+  "params": {},
+  "tuned": false,
+  "commit": "dc83ab5",
+  "n_jobs": 45,
+  "Ws": [
+    100,
+    200,
+    400
+  ],
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "drifts": [
+    "none",
+    "abrupt",
+    "gradual"
+  ],
+  "start": 800,
+  "max_steps": null,
+  "finished": "2026-10-15T19:16:45+00:00"
+}
