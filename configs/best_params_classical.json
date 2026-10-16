@@ -3,76 +3,81 @@
     "svr_rbf": {
       "params": {
         "C": 1.8710373896211634,
-        "epsilon": 0.03269457920161319,
+        "epsilon": 0.032694579201613186,
         "gamma": 0.08463989491351293
       },
-      "objective": 0.0011719913720738384,
-      "default_objective": 0.0019124300770701403,
+      "objective": 0.001172485666384157,
+      "default_objective": 0.0018803511122955309,
       "direction": "min",
       "n_trials": 20,
       "tune_rows": 800,
       "tune_W": 200,
-      "seed": 0
+      "seed": 0,
+      "data_fingerprint": "a00cf91d8498"
     },
     "random_forest": {
       "params": {
         "n_estimators": 50,
-        "max_depth": 12,
+        "max_depth": 8,
         "min_samples_leaf": 5
       },
-      "objective": 0.0012276788932645817,
-      "default_objective": 0.0013100011561230605,
+      "objective": 0.0012263878817118058,
+      "default_objective": 0.0013280437176924524,
       "direction": "min",
       "n_trials": 20,
       "tune_rows": 800,
       "tune_W": 200,
-      "seed": 0
+      "seed": 0,
+      "data_fingerprint": "a00cf91d8498"
     },
     "river_ht_reg": {
       "params": {
-        "grace_period": 132,
-        "delta": 0.0015055780010730245,
+        "grace_period": 73,
+        "delta": 1.0412942222253534e-06,
         "leaf_prediction": "mean"
       },
-      "objective": 0.0012771406504786585,
-      "default_objective": 0.001454948366228722,
+      "objective": 0.001218406572902441,
+      "default_objective": 0.0014349141427330357,
       "direction": "min",
       "n_trials": 20,
       "tune_rows": 800,
       "tune_W": 200,
-      "seed": 0
+      "seed": 0,
+      "data_fingerprint": "a00cf91d8498"
     }
   },
   "T3": {
     "river_ht": {
       "params": {
         "grace_period": 88,
-        "delta": 6.0767636683586786e-06,
+        "delta": 6.076763668358678e-06,
         "split_criterion": "hellinger",
         "leaf_prediction": "nba"
       },
-      "objective": 0.7699999999999999,
+      "objective": 0.7683333333333332,
       "default_objective": 0.73,
       "direction": "max",
       "n_trials": 20,
       "tune_rows": 800,
       "tune_W": 200,
-      "seed": 0
+      "seed": 0,
+      "data_fingerprint": "93d5fb654035"
     },
     "river_hat": {
       "params": {
-        "grace_period": 61,
-        "delta": 1.1533211466105446e-07,
-        "split_criterion": "hellinger",
+        "grace_period": 37,
+        "delta": 3.0681652123986253e-06,
+        "split_criterion": "info_gain",
         "leaf_prediction": "nba"
       },
-      "objective": 0.7633333333333332,
-      "default_objective": 0.7116666666666664,
+      "objective": 0.7633333333333334,
+      "default_objective": 0.7166666666666666,
       "direction": "max",
       "n_trials": 20,
       "tune_rows": 800,
       "tune_W": 200,
-      "seed": 0
+      "seed": 0,
+      "data_fingerprint": "93d5fb654035"
     },
     "batch_tree": {
       "params": {
@@ -85,24 +90,25 @@
       "n_trials": 20,
       "tune_rows": 800,
       "tune_W": 200,
-      "seed": 0
+      "seed": 0,
+      "data_fingerprint": "93d5fb654035"
     }
   },
   "T2": {
     "svr_recon_rbf": {
       "params": {
-        "C": 0.8229214987866184,
-        "epsilon": 0.1930341675608402,
-        "gamma": 1.9766381184108746
+        "C": 13.169840087662216,
+        "epsilon": 0.005262524520578738,
+        "gamma": 3.642531788206868
       },
-      "objective": 0.9929021752745187,
-      "default_objective": 0.9888104880798296,
+      "objective": 0.8753525098702764,
+      "default_objective": 0.7044557247602933,
       "direction": "max",
       "n_trials": 20,
       "tune_rows": 800,
       "tune_W": 200,
       "seed": 0,
-      "data_fingerprint": "cc26f4bb9d3a"
+      "data_fingerprint": "9e87f7332197"
     },
     "ae": {
       "params": {
@@ -110,28 +116,28 @@
         "learning_rate_init": 0.001684592825106602,
         "max_iter": 500
       },
-      "objective": 0.9663062085090394,
-      "default_objective": 0.9463070435472423,
+      "objective": 0.9043053205489754,
+      "default_objective": 0.8986651626245535,
       "direction": "max",
       "n_trials": 20,
       "tune_rows": 800,
       "tune_W": 200,
       "seed": 0,
-      "data_fingerprint": "cc26f4bb9d3a"
+      "data_fingerprint": "9e87f7332197"
     },
     "ocsvm_rbf": {
       "params": {
-        "nu": 0.13765521975838288,
-        "gamma": 9.318959508420908
+        "nu": 0.29042512227855233,
+        "gamma": 0.08153132351979062
       },
-      "objective": 0.9920253851613712,
-      "default_objective": 0.9850110642561898,
+      "objective": 0.8420755781161873,
+      "default_objective": 0.771197593532619,
       "direction": "max",
       "n_trials": 20,
       "tune_rows": 800,
       "tune_W": 200,
       "seed": 0,
-      "data_fingerprint": "cc26f4bb9d3a"
+      "data_fingerprint": "9e87f7332197"
     }
   }
 }

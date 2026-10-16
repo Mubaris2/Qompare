@@ -1,21 +1,5 @@
 {
+  "mock": true,
   "task": "regression",
-  "source": "Seoul Bike (UCI)",
-  "target_scaling": "global_minmax",
-  "fit_rows": 800,
-  "n_fit_samples": 800,
-  "margin": 0.35,
-  "pca_explained_variance_ratio": [
-    0.3273,
-    0.192,
-    0.134,
-    0.0895,
-    0.0839,
-    0.0774,
-    0.0585
-  ],
-  "frac_outside_range_after_first_window": 0.1913316582914573,
-  "fit_rows_exceed_tune_rows": false,
-  "n_rows": 8760,
   "n_features": 7
 }

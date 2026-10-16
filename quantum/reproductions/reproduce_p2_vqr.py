@@ -9,7 +9,8 @@ def run_p2_sweep(parquet_path: str = "data/processed/T1_stream.parquet", quick_m
     df = pd.read_parquet(parquet_path)
     feature_cols = [c for c in df.columns if c.startswith("f")]
     X = df[feature_cols].values
-    y = df["target"].values
+    target_col = "target" if "target" in df.columns else "y"
+    y = df[target_col].values
 
     # Paper 2 exact split sizes: 400 train, 250 test
     X_train, y_train = X[:400], y[:400]

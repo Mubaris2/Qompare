@@ -1,0 +1,6 @@
+{
+  "mock": true,
+  "task": "classification",
+  "n_features": 4,
+  "natural_drift_at": 2000
+}

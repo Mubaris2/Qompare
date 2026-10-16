@@ -2,12 +2,14 @@
   "task": "T1",
   "model": "river_ht_reg",
   "params": {
-    "grace_period": 132,
-    "delta": 0.0015055780010730245,
+    "grace_period": 73,
+    "delta": 1.0412942222253534e-06,
     "leaf_prediction": "mean"
   },
   "tuned": true,
-  "commit": "dc83ab5",
+  "commit": "c739f5b",
+  "data_fingerprint": "a00cf91d8498",
+  "tuned_on_fingerprint": "a00cf91d8498",
   "n_jobs": 45,
   "Ws": [
     100,
@@ -28,5 +30,5 @@
   ],
   "start": 800,
   "max_steps": null,
-  "finished": "2026-10-16T09:41:54+00:00"
+  "finished": "2026-10-16T13:34:54+00:00"
 }
