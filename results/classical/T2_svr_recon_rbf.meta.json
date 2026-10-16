@@ -1,0 +1,32 @@
+{
+  "task": "T2",
+  "model": "svr_recon_rbf",
+  "params": {
+    "C": 13.169840087662216,
+    "epsilon": 0.005262524520578738,
+    "gamma": 3.642531788206868
+  },
+  "tuned": true,
+  "commit": "dc83ab5",
+  "n_jobs": 45,
+  "Ws": [
+    100,
+    200,
+    400
+  ],
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "drifts": [
+    "none",
+    "abrupt",
+    "gradual"
+  ],
+  "start": 800,
+  "max_steps": null,
+  "finished": "2026-10-15T19:17:31+00:00"
+}

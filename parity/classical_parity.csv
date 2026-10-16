@@ -1,0 +1,32 @@
+paper,dataset,model,setting,metric,mean,std,n,note
+P2,T1 (Seoul Bike),svr_rbf,default,mse,0.0035727771062146,,1,"train rows 0..399, test next 250"
+P2,T1 (Seoul Bike),svr_rbf,default,mae,0.0445066592947442,,1,"train rows 0..399, test next 250"
+P2,T1 (Seoul Bike),svr_rbf,tuned,mse,0.0013671014698056,,1,"train rows 0..399, test next 250"
+P2,T1 (Seoul Bike),svr_rbf,tuned,mae,0.0288392765371215,,1,"train rows 0..399, test next 250"
+P2,T1 (Seoul Bike),random_forest,default,mse,0.0013844460578359,,1,"train rows 0..399, test next 250"
+P2,T1 (Seoul Bike),random_forest,default,mae,0.0287163892013498,,1,"train rows 0..399, test next 250"
+P2,T1 (Seoul Bike),random_forest,tuned,mse,0.0013354888702874,,1,"train rows 0..399, test next 250"
+P2,T1 (Seoul Bike),random_forest,tuned,mae,0.0281192746877581,,1,"train rows 0..399, test next 250"
+P2,T1 (Seoul Bike),river_ht_reg,default,mse,0.001134710160941,,1,"train rows 0..399, test next 250"
+P2,T1 (Seoul Bike),river_ht_reg,default,mae,0.0257354953591484,,1,"train rows 0..399, test next 250"
+P2,T1 (Seoul Bike),river_ht_reg,tuned,mse,0.001261779205886,,1,"train rows 0..399, test next 250"
+P2,T1 (Seoul Bike),river_ht_reg,tuned,mae,0.02872262908836,,1,"train rows 0..399, test next 250"
+P2,T1 (Seoul Bike),naive_mean,default,mse,0.0017108964585276,,1,"train rows 0..399, test next 250"
+P2,T1 (Seoul Bike),naive_mean,default,mae,0.0342771653543307,,1,"train rows 0..399, test next 250"
+P2,T1 (Seoul Bike),naive_last,default,mse,0.0016167917846039,,1,"train rows 0..399, test next 250"
+P2,T1 (Seoul Bike),naive_last,default,mae,0.0330483689538807,,1,"train rows 0..399, test next 250"
+P3,23_mammography,svr_recon_rbf,"default, 50 draws",auc,0.8388,0.07270204398777244,50,paper reports AUC 0.94
+P3,23_mammography,svr_recon_rbf,"default, 50 draws",precision,0.7706003466403395,0.07311553255293525,50,
+P3,23_mammography,svr_recon_rbf,"default, 50 draws",recall,0.7903999999999999,0.14211206845303462,50,
+P3,23_mammography,svr_recon_rbf,"default, 50 draws",f1,0.7716257439400377,0.08883795649839021,50,
+P3,23_mammography,svr_recon_rbf,"default, 50 draws",accuracy,0.7735999999999998,0.06638554059431918,50,
+P3,23_mammography,ae,"default, 50 draws",auc,0.8305439999999998,0.07969247934403847,50,paper reports AUC 0.74
+P3,23_mammography,ae,"default, 50 draws",precision,0.8154382320179532,0.16453084576600768,50,
+P3,23_mammography,ae,"default, 50 draws",recall,0.4984000000000001,0.19648267099161695,50,
+P3,23_mammography,ae,"default, 50 draws",f1,0.5960515816631875,0.17876224819390793,50,
+P3,23_mammography,ae,"default, 50 draws",accuracy,0.6936000000000001,0.08912373421261029,50,
+P3,23_mammography,ocsvm_rbf,"default, 50 draws",auc,0.8288800000000001,0.08195409446757373,50,
+P3,23_mammography,ocsvm_rbf,"default, 50 draws",precision,0.5427705553713333,0.028320774734593195,50,
+P3,23_mammography,ocsvm_rbf,"default, 50 draws",recall,0.9880000000000001,0.021540659228538022,50,
+P3,23_mammography,ocsvm_rbf,"default, 50 draws",f1,0.700046456215003,0.022894082498436764,50,
+P3,23_mammography,ocsvm_rbf,"default, 50 draws",accuracy,0.5752000000000002,0.0464,50,

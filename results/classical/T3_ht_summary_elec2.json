@@ -1,0 +1,33 @@
+[
+  {
+    "model": "river_ht",
+    "mean_block_accuracy": 0.7982444444444443,
+    "throughput_per_s": 7809.488658913369,
+    "seconds": 5.80217245699987,
+    "peak_mem_mb": 0.942228,
+    "n_nodes": 49
+  },
+  {
+    "model": "river_hat",
+    "mean_block_accuracy": 0.8310444444444446,
+    "throughput_per_s": 2832.401482465561,
+    "seconds": 15.997732059000555,
+    "peak_mem_mb": 0.506316,
+    "n_nodes": 1
+  },
+  {
+    "model": "river_gaussian_nb",
+    "mean_block_accuracy": 0.7284222222222222,
+    "throughput_per_s": 3790.4862966902074,
+    "seconds": 11.954138981999677,
+    "peak_mem_mb": 0.081155,
+    "n_nodes": null
+  },
+  {
+    "model": "batch_tree_retrain_all",
+    "mean_block_accuracy": 0.7334157303370786,
+    "throughput_per_s": 6493.798323429113,
+    "seconds": 6.977734407999378,
+    "n_nodes": 7499
+  }
+]

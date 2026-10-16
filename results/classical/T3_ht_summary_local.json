@@ -1,0 +1,55 @@
+[
+  {
+    "model": "river_ht",
+    "mean_block_accuracy": 0.7982444444444443,
+    "throughput_per_s": 7736.729041170514,
+    "seconds": 5.8567386499998975,
+    "peak_mem_mb": 0.94111,
+    "final_nodes": 49,
+    "mean_nodes": 25.044444444444444
+  },
+  {
+    "model": "river_hat",
+    "mean_block_accuracy": 0.8310444444444446,
+    "throughput_per_s": 2923.5980390612526,
+    "seconds": 15.498710628000481,
+    "peak_mem_mb": 0.506413,
+    "final_nodes": 1,
+    "mean_nodes": 6.6
+  },
+  {
+    "model": "river_gaussian_nb",
+    "mean_block_accuracy": 0.7284222222222222,
+    "throughput_per_s": 3885.7348192471745,
+    "seconds": 11.661114849000114,
+    "peak_mem_mb": 0.078627,
+    "final_nodes": null,
+    "mean_nodes": null
+  },
+  {
+    "model": "no_change(persistence)",
+    "mean_block_accuracy": 0.8535333333333333,
+    "throughput_per_s": 545260.548432307,
+    "seconds": 0.08310155599974678,
+    "peak_mem_mb": 0.019456,
+    "final_nodes": null,
+    "mean_nodes": null
+  },
+  {
+    "model": "majority_prior",
+    "mean_block_accuracy": 0.5760222222222222,
+    "throughput_per_s": 216262.8065026467,
+    "seconds": 0.20952285200019105,
+    "peak_mem_mb": 0.026481,
+    "final_nodes": null,
+    "mean_nodes": null
+  },
+  {
+    "model": "batch_tree_retrain_all",
+    "mean_block_accuracy": 0.7334157303370786,
+    "throughput_per_s": 6512.006040327001,
+    "seconds": 6.9582245040001,
+    "final_nodes": 7499,
+    "mean_nodes": 3501.7640449438204
+  }
+]
