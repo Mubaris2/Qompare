@@ -2,11 +2,13 @@
   "task": "T3",
   "model": "batch_tree",
   "params": {
-    "max_depth": null,
-    "min_samples_leaf": 5
+    "max_depth": 5,
+    "min_samples_leaf": 1
   },
   "tuned": true,
-  "commit": "dc83ab5",
+  "commit": "c739f5b",
+  "data_fingerprint": "93d5fb654035",
+  "tuned_on_fingerprint": "93d5fb654035",
   "n_jobs": 45,
   "Ws": [
     100,
@@ -27,5 +29,5 @@
   ],
   "start": 800,
   "max_steps": null,
-  "finished": "2026-10-15T19:22:03+00:00"
+  "finished": "2026-10-16T13:39:35+00:00"
 }

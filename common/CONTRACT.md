@@ -44,6 +44,34 @@ Branches `a/*` and `b/*`. PRs only for `common/`. Pin versions in `requirements.
 0 = no better than persistence, < 0 = worse. ELEC2 labels are strongly autocorrelated, so raw accuracy alone is misleading.
 Per-block values are noisy: pool over the stream (recompute from mean accuracy and mean acc_nochange) for tables.
 
+## Week 2 additions (proposal from A, B to confirm before `common/` freeze)
+**Constants** live in `common/config.py` (TUNE_ROWS, TUNE_W, N_TRIALS, W_GRID, H, SEEDS, DRIFTS, drift parameters). Import them, do not hardcode.
+
+**Tuning prefix.** Rows `[0, 800)` are for hyperparameter search ONLY. Streaming evaluation starts at row 800 for every model:
+`run_stream(..., start=config.STREAM_START)`. Training windows may include prefix rows. Test blocks never do.
+
+**Equal tuning budget.** `N_TRIALS = 20` random-search trials per tunable model, W = 200, H per task, tuned on the prefix.
+Final config = best of the 20 trials. Defaults are evaluated once as a reference and never selected. Objective: T1 mean MSE,
+T2 pooled AUC over the whole prefix evaluation, T3 mean accuracy. B writes `configs/best_params_quantum.json` in the same format as
+`configs/best_params_classical.json` and logs trials to `tuning/quantum_trials_<task>.csv`.
+
+**Parity splits (identical for both sides).**
+- P2 parity: T1 rows 0..399 train, rows 400..649 test. MSE and MAE.
+- P3 parity: use `common/p3_protocol.py` (`draw_indices`, `prepare`). 30 normal train, 25 normal + 25 anomalous test, PCA-5 scaled to [-1, 1],
+  fit on the 30 training samples only. Draw r is deterministic. Threshold = 3 x mean training loss. Dataset: `data/raw/ad/23_mammography.npz` (P3 Mammo).
+  Classical results: `parity/classical_parity.csv`. Quantum results go to `parity/quantum_parity.csv`, same columns.
+Do not fork `p3_protocol.py`.
+
+**Naive reference models** (`naive_mean`, `naive_last`, `naive_majority`) are part of the classical grid. Quantum models must be reported against them.
+
+## Preprocessing rule (added after Week 2 review)
+Scaler and PCA statistics are fitted on rows `[0, fit_rows)` with `fit_rows <= TUNE_ROWS (800)`, so nothing computed from the test stream
+enters preprocessing. T2 fits on NORMAL rows of that window only; rows are NOT reordered, so anomalies stay spread through the stream.
+`--margin` widens the min/max range to reduce clipping. If a task still clips heavily (e.g. T1 seasonal drift), report it as real
+non-stationarity instead of enlarging `fit_rows`. If a larger `fit_rows` is used anyway it must be disclosed in the report
+and applied identically to every model. `python data/check_streams.py` prints these diagnostics and warnings.
+T2 streaming dataset: ADBench shuttle. Mammography is used for P3 parity only.
+
 # Technical Contract (Frozen Day 1)
 
 ## 1. Model Interface

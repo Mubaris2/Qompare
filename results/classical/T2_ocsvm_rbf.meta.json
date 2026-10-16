@@ -2,11 +2,13 @@
   "task": "T2",
   "model": "ocsvm_rbf",
   "params": {
-    "nu": 0.08910177747372855,
-    "gamma": 3.3047486443043814
+    "nu": 0.29042512227855233,
+    "gamma": 0.08153132351979062
   },
   "tuned": true,
-  "commit": "dc83ab5",
+  "commit": "c739f5b",
+  "data_fingerprint": "9e87f7332197",
+  "tuned_on_fingerprint": "9e87f7332197",
   "n_jobs": 45,
   "Ws": [
     100,
@@ -27,5 +29,5 @@
   ],
   "start": 800,
   "max_steps": null,
-  "finished": "2026-10-15T19:20:01+00:00"
+  "finished": "2026-10-16T13:38:13+00:00"
 }

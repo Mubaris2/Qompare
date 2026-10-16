@@ -12,7 +12,8 @@ def run_p3_reproduction(parquet_path: str = "data/processed/T2_stream.parquet"):
     df = pd.read_parquet(parquet_path)
     feature_cols = [c for c in df.columns if c.startswith("f")]
     X = df[feature_cols].values
-    y = df["label"].values
+    label_col = "label" if "label" in df.columns else "y"
+    y = df[label_col].values
 
     # Train on first 150 normal samples, evaluate on remaining stream
     X_train, y_train = X[:150], y[:150]

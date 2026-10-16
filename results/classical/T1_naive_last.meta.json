@@ -3,7 +3,9 @@
   "model": "naive_last",
   "params": {},
   "tuned": false,
-  "commit": "dc83ab5",
+  "commit": "c739f5b",
+  "data_fingerprint": "a00cf91d8498",
+  "tuned_on_fingerprint": null,
   "n_jobs": 45,
   "Ws": [
     100,
@@ -24,5 +26,5 @@
   ],
   "start": 800,
   "max_steps": null,
-  "finished": "2026-10-15T19:16:45+00:00"
+  "finished": "2026-10-16T13:34:57+00:00"
 }

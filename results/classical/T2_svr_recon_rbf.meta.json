@@ -7,7 +7,9 @@
     "gamma": 3.642531788206868
   },
   "tuned": true,
-  "commit": "dc83ab5",
+  "commit": "c739f5b",
+  "data_fingerprint": "9e87f7332197",
+  "tuned_on_fingerprint": "9e87f7332197",
   "n_jobs": 45,
   "Ws": [
     100,
@@ -28,5 +30,5 @@
   ],
   "start": 800,
   "max_steps": null,
-  "finished": "2026-10-15T19:17:31+00:00"
+  "finished": "2026-10-16T13:35:25+00:00"
 }

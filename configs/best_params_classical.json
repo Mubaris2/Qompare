@@ -2,31 +2,33 @@
   "T1": {
     "svr_rbf": {
       "params": {
-        "C": 0.15928233280153958,
-        "epsilon": 0.03721927621623354,
-        "gamma": 0.01831143732853741
+        "C": 1.8710373896211634,
+        "epsilon": 0.032694579201613186,
+        "gamma": 0.08463989491351293
       },
-      "objective": 0.0012145258872953736,
-      "default_objective": 0.0016612295828908946,
+      "objective": 0.001172485666384157,
+      "default_objective": 0.0018803511122955309,
       "direction": "min",
       "n_trials": 20,
       "tune_rows": 800,
       "tune_W": 200,
-      "seed": 0
+      "seed": 0,
+      "data_fingerprint": "a00cf91d8498"
     },
     "random_forest": {
       "params": {
-        "n_estimators": 100,
-        "max_depth": null,
+        "n_estimators": 50,
+        "max_depth": 8,
         "min_samples_leaf": 5
       },
-      "objective": 0.0012448067098891214,
-      "default_objective": 0.001344914219111601,
+      "objective": 0.0012263878817118058,
+      "default_objective": 0.0013280437176924524,
       "direction": "min",
       "n_trials": 20,
       "tune_rows": 800,
       "tune_W": 200,
-      "seed": 0
+      "seed": 0,
+      "data_fingerprint": "a00cf91d8498"
     },
     "river_ht_reg": {
       "params": {
@@ -34,13 +36,62 @@
         "delta": 1.0412942222253534e-06,
         "leaf_prediction": "mean"
       },
-      "objective": 0.0013031554672627921,
-      "default_objective": 0.001440461222315374,
+      "objective": 0.001218406572902441,
+      "default_objective": 0.0014349141427330357,
       "direction": "min",
       "n_trials": 20,
       "tune_rows": 800,
       "tune_W": 200,
-      "seed": 0
+      "seed": 0,
+      "data_fingerprint": "a00cf91d8498"
+    }
+  },
+  "T3": {
+    "river_ht": {
+      "params": {
+        "grace_period": 88,
+        "delta": 6.076763668358678e-06,
+        "split_criterion": "hellinger",
+        "leaf_prediction": "nba"
+      },
+      "objective": 0.7683333333333332,
+      "default_objective": 0.73,
+      "direction": "max",
+      "n_trials": 20,
+      "tune_rows": 800,
+      "tune_W": 200,
+      "seed": 0,
+      "data_fingerprint": "93d5fb654035"
+    },
+    "river_hat": {
+      "params": {
+        "grace_period": 37,
+        "delta": 3.0681652123986253e-06,
+        "split_criterion": "info_gain",
+        "leaf_prediction": "nba"
+      },
+      "objective": 0.7633333333333334,
+      "default_objective": 0.7166666666666666,
+      "direction": "max",
+      "n_trials": 20,
+      "tune_rows": 800,
+      "tune_W": 200,
+      "seed": 0,
+      "data_fingerprint": "93d5fb654035"
+    },
+    "batch_tree": {
+      "params": {
+        "max_depth": 5,
+        "min_samples_leaf": 1
+      },
+      "objective": 0.7833333333333333,
+      "default_objective": 0.7816666666666666,
+      "direction": "max",
+      "n_trials": 20,
+      "tune_rows": 800,
+      "tune_W": 200,
+      "seed": 0,
+      "data_fingerprint": "93d5fb654035"
     }
   },
   "T2": {
@@ -50,85 +101,43 @@
         "epsilon": 0.005262524520578738,
         "gamma": 3.642531788206868
       },
-      "objective": 0.8898758561643835,
-      "default_objective": 0.7498929794520548,
+      "objective": 0.8753525098702764,
+      "default_objective": 0.7044557247602933,
       "direction": "max",
       "n_trials": 20,
       "tune_rows": 800,
       "tune_W": 200,
-      "seed": 0
+      "seed": 0,
+      "data_fingerprint": "9e87f7332197"
     },
     "ae": {
       "params": {
-        "alpha": 0.0009889688546247581,
-        "learning_rate_init": 0.016753101244182673,
+        "alpha": 0.00011202978422012269,
+        "learning_rate_init": 0.001684592825106602,
         "max_iter": 500
       },
-      "objective": 0.9106378424657534,
-      "default_objective": 0.9106378424657534,
+      "objective": 0.9043053205489754,
+      "default_objective": 0.8986651626245535,
       "direction": "max",
       "n_trials": 20,
       "tune_rows": 800,
       "tune_W": 200,
-      "seed": 0
+      "seed": 0,
+      "data_fingerprint": "9e87f7332197"
     },
     "ocsvm_rbf": {
       "params": {
-        "nu": 0.08910177747372855,
-        "gamma": 3.3047486443043814
+        "nu": 0.29042512227855233,
+        "gamma": 0.08153132351979062
       },
-      "objective": 0.8602311643835617,
-      "default_objective": 0.738013698630137,
+      "objective": 0.8420755781161873,
+      "default_objective": 0.771197593532619,
       "direction": "max",
       "n_trials": 20,
       "tune_rows": 800,
       "tune_W": 200,
-      "seed": 0
-    }
-  },
-  "T3": {
-    "river_ht": {
-      "params": {
-        "grace_period": 169,
-        "delta": 0.0010282453335898507,
-        "split_criterion": "info_gain",
-        "leaf_prediction": "nb"
-      },
-      "objective": 0.7666666666666665,
-      "default_objective": 0.7316666666666666,
-      "direction": "max",
-      "n_trials": 20,
-      "tune_rows": 800,
-      "tune_W": 200,
-      "seed": 0
-    },
-    "river_hat": {
-      "params": {
-        "grace_period": 54,
-        "delta": 1.6872513156089955e-07,
-        "split_criterion": "hellinger",
-        "leaf_prediction": "nba"
-      },
-      "objective": 0.8249999999999998,
-      "default_objective": 0.7849999999999999,
-      "direction": "max",
-      "n_trials": 20,
-      "tune_rows": 800,
-      "tune_W": 200,
-      "seed": 0
-    },
-    "batch_tree": {
-      "params": {
-        "max_depth": null,
-        "min_samples_leaf": 5
-      },
-      "objective": 0.7933333333333333,
-      "default_objective": 0.7916666666666666,
-      "direction": "max",
-      "n_trials": 20,
-      "tune_rows": 800,
-      "tune_W": 200,
-      "seed": 0
+      "seed": 0,
+      "data_fingerprint": "9e87f7332197"
     }
   }
 }

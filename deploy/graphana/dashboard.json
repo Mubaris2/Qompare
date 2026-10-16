@@ -1,0 +1,80 @@
+{
+  "annotations": { "list": [] },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "title": "Streaming Performance (Metric vs Samples Seen)",
+      "type": "timeseries",
+      "gridPos": { "h": 9, "w": 12, "x": 0, "y": 0 },
+      "targets": [
+        {
+          "query": "from(bucket: \"metrics\")\n  |> range(start: 2026-01-01T00:00:00Z, stop: 2026-01-02T00:00:00Z)\n  |> filter(fn: (r) => r._measurement == \"stream_eval\")\n  |> filter(fn: (r) => r._field == \"metric_value\")\n  |> filter(fn: (r) => r.task == \"${task}\" and r.W == \"${W}\" and r.drift == \"${drift}\")\n  |> group(columns: [\"model\", \"variant\", \"metric_name\"])\n  |> aggregateWindow(every: 100s, fn: mean, createEmpty: false)"
+        }
+      ]
+    },
+    {
+      "title": "Encode / Fit / Predict Time Breakdown (s)",
+      "type": "barchart",
+      "gridPos": { "h": 9, "w": 12, "x": 12, "y": 0 },
+      "targets": [
+        {
+          "query": "from(bucket: \"metrics\")\n  |> range(start: 2026-01-01T00:00:00Z, stop: 2026-01-02T00:00:00Z)\n  |> filter(fn: (r) => r._measurement == \"stream_eval\")\n  |> filter(fn: (r) => r._field == \"t_encode\" or r._field == \"t_fit\" or r._field == \"t_predict\")\n  |> filter(fn: (r) => r.task == \"${task}\" and r.W == \"${W}\")\n  |> group(columns: [\"model\", \"_field\"])\n  |> mean()"
+        }
+      ]
+    },
+    {
+      "title": "Quantum Circuit Executions per Step (E1 Cache Effect)",
+      "type": "timeseries",
+      "gridPos": { "h": 9, "w": 12, "x": 0, "y": 9 },
+      "targets": [
+        {
+          "query": "from(bucket: \"metrics\")\n  |> range(start: 2026-01-01T00:00:00Z, stop: 2026-01-02T00:00:00Z)\n  |> filter(fn: (r) => r._measurement == \"stream_eval\")\n  |> filter(fn: (r) => r.family == \"quantum\" and r._field == \"n_circuit_evals\")\n  |> filter(fn: (r) => r.task == \"${task}\")\n  |> group(columns: [\"model\", \"variant\", \"W\"])"
+        }
+      ]
+    },
+    {
+      "title": "Live Pipeline End-to-End Latency (Kafka -> InfluxDB)",
+      "type": "timeseries",
+      "gridPos": { "h": 9, "w": 12, "x": 12, "y": 9 },
+      "targets": [
+        {
+          "query": "from(bucket: \"metrics\")\n  |> range(start: 2026-01-01T00:00:00Z, stop: 2026-01-02T00:00:00Z)\n  |> filter(fn: (r) => r._measurement == \"stream_eval\")\n  |> filter(fn: (r) => r._field == \"latency\")\n  |> group(columns: [\"task\", \"model\", \"family\"])"
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 38,
+  "templating": {
+    "list": [
+      {
+        "name": "task",
+        "type": "custom",
+        "query": "T1,T2,T3",
+        "current": { "text": "T1", "value": "T1" }
+      },
+      {
+        "name": "W",
+        "type": "custom",
+        "query": "100,200,400",
+        "current": { "text": "200", "value": "200" }
+      },
+      {
+        "name": "drift",
+        "type": "custom",
+        "query": "none,abrupt,gradual",
+        "current": { "text": "none", "value": "none" }
+      }
+    ]
+  },
+  "time": {
+    "from": "2026-01-01T00:10:00.000Z",
+    "to": "2026-01-01T03:00:00.000Z"
+  },
+  "title": "Quantum vs Classical Streaming Analytics",
+  "uid": "quantum-classical-stream",
+  "version": 1
+}
