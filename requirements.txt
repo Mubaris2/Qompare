@@ -18,3 +18,6 @@ pennylane-lightning>=0.40.0,<1
 ucimlrepo==0.0.7
 autoray==0.6.12
 matplotlib==3.11.2
+kafka-python
+influxdb-client
+pyspark

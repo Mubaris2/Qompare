@@ -41,24 +41,43 @@ def fit_scale(X, fit_rows, n_components=None, fit_mask=None, margin=0.0):
     mu, sd = F.mean(0), F.std(0) + 1e-12
     Z, F = (X - mu) / sd, (F - mu) / sd                       # F = standardised fit window
     info = {"fit_rows": fit_rows, "n_fit_samples": int(len(F)), "margin": margin}
+    pca_mean, pca_comp = None, None
     if n_components:
         pca = PCA(n_components=n_components, random_state=0).fit(F)
         Z, F = pca.transform(Z), pca.transform(F)
         info["pca_explained_variance_ratio"] = pca.explained_variance_ratio_.round(4).tolist()
+        pca_mean = pca.mean_.tolist()
+        pca_comp = pca.components_.tolist()
     lo, hi = F.min(0), F.max(0); r = np.where(hi - lo == 0, 1, hi - lo); lo, hi = lo - margin * r, hi + margin * r
     S = np.pi * (Z - lo) / (hi - lo)
     outside = (S < 0) | (S > np.pi)
     info["frac_outside_range_after_first_window"] = float(outside.any(1)[fit_rows:].mean())
     info["clipped_share_per_feature"] = outside[fit_rows:].mean(0).round(4).tolist()   # measured before clipping
     info["fit_rows_exceed_tune_rows"] = bool(fit_rows > C.TUNE_ROWS)
-    return np.clip(S, 0, np.pi), info
+    transform_spec = {
+        "mu": mu.tolist(),
+        "sd": sd.tolist(),
+        "n_components": n_components,
+        "pca_mean": pca_mean,
+        "pca_components": pca_comp,
+        "lo": lo.tolist(),
+        "hi": hi.tolist(),
+        "margin": float(margin),
+        "clip_min": 0.0,
+        "clip_max": float(np.pi),
+    }
+    return np.clip(S, 0, np.pi), info, transform_spec
 
 
-def save(name, F, y, meta):
+def save(name, F, y, meta, transform_spec=None):
     df = pd.DataFrame(F, columns=[f"f{i}" for i in range(F.shape[1])]); df["y"] = np.asarray(y)
     df.to_parquet(PROC / f"{name}_stream.parquet", index=False)
     meta["n_rows"] = len(df); meta["n_features"] = F.shape[1]
     (PROC / f"{name}_stream.meta.json").write_text(json.dumps(meta, indent=2))
+    if transform_spec is not None:
+        transform_spec["task"] = name
+        transform_spec["n_features_out"] = int(F.shape[1])
+        (PROC / f"{name}_transform.json").write_text(json.dumps(transform_spec, indent=2))
     print(f"{name}: {df.shape} -> {PROC / (name + '_stream.parquet')}")
 
 
@@ -69,11 +88,14 @@ def t1(a):
     y = df["Rented Bike Count"].astype(float).to_numpy()
     X = df.drop(columns=["Date", "Rented Bike Count"])
     X = pd.get_dummies(X, columns=X.select_dtypes(exclude="number").columns.tolist(), dtype=float)   # pandas 3: strings are not dtype object
-    F, info = fit_scale(X.to_numpy(), a.fit_rows, a.n_components, margin=a.margin)
+    F, info, tf = fit_scale(X.to_numpy(), a.fit_rows, a.n_components, margin=a.margin)
     # DEVIATION (flag to B): target scaled GLOBALLY to [0,1] like P2, because a variational
     # regressor cannot output values outside its bounded range. Features stay leak-free.
-    yy = (y - y.min()) / (y.max() - y.min())
-    save("T1", F, yy, {"task": "regression", "source": "Seoul Bike (UCI)", "target_scaling": "global_minmax", **info})
+    y_min, y_max = float(y.min()), float(y.max())
+    yy = (y - y_min) / (y_max - y_min)
+    tf["feature_columns"] = list(X.columns)
+    tf["target_scaling"] = {"mode": "global_minmax", "y_min": y_min, "y_max": y_max}
+    save("T1", F, yy, {"task": "regression", "source": "Seoul Bike (UCI)", "target_scaling": "global_minmax", **info}, tf)
 
 
 def t2(a):
@@ -89,10 +111,11 @@ def t2(a):
     if a.n_rows: X, y = X[: a.n_rows], y[: a.n_rows]
     # No reordering: anomalies stay spread through the stream (incl. the tuning prefix).
     # Semisupervised: only NORMAL samples inside the first fit_rows rows are used to fit scaler/PCA.
-    F, info = fit_scale(X, a.fit_rows, a.n_components, fit_mask=(y == 0), margin=a.margin)
+    F, info, tf = fit_scale(X, a.fit_rows, a.n_components, fit_mask=(y == 0), margin=a.margin)
+    tf["order_seed"] = int(a.order_seed)
     save("T2", F, y, {"task": "anomaly", "label": "1=anomaly", "source": str(p.name),
                       "anomaly_rate": float(y.mean()), "anomalies_in_tune_prefix": int(y[:C.TUNE_ROWS].sum()),
-                      "order_seed": a.order_seed, **info})
+                      "order_seed": a.order_seed, **info}, tf)
 
 
 def t3(a):
@@ -114,9 +137,11 @@ def t3(a):
     dropped = [c for c in a.drop if c in D.columns]      # 'date' is a time index: a trend, not a signal
     D = D.drop(columns=dropped)
     X = D.to_numpy(float); y = np.array([v for _, v in rows])
-    F, info = fit_scale(X, a.fit_rows, a.n_components, margin=a.margin)
+    F, info, tf = fit_scale(X, a.fit_rows, a.n_components, margin=a.margin)
+    tf["feature_columns"] = list(D.columns)
+    tf["dropped_columns"] = dropped
     save("T3", F, y, {"task": "classification", "source": a.source, "natural_drift": True,
-                      "dropped_columns": dropped, "columns_used": list(D.columns), **info})
+                      "dropped_columns": dropped, "columns_used": list(D.columns), **info}, tf)
 
 
 if __name__ == "__main__":
